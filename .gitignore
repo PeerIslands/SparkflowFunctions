@@ -1,0 +1,20 @@
+### Scala template
+*.class
+*.log
+*.DS_Store
+
+exports
+/project/project/
+.idea/libraries
+.idea
+project/target
+project/.bloop/
+target
+.bsp
+
+example-data/original*
+local-storage
+/.bloop
+/.metals
+/.vscode
+.jvmopts
