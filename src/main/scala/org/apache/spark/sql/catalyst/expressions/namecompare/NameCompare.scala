@@ -7,6 +7,7 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.codegen.CodegenFallback
 import org.apache.spark.sql.catalyst.expressions.{BinaryExpression, ExpectsInputTypes, Expression, ExpressionInfo}
 import org.apache.spark.sql.types._
+import org.apache.spark.unsafe.types.UTF8String
 
 case class NameCompare(left : Expression, right : Expression)
   extends BinaryExpression with ExpectsInputTypes with CodegenFallback {
@@ -44,8 +45,8 @@ case class NameCompare(left : Expression, right : Expression)
         val leftName = ExpressionEncoder[Name]().resolveAndBind(leftSchema.toAttributes).objDeserializer.eval(input = leftNameRow).asInstanceOf[Name]
         val rightName = ExpressionEncoder[Name]().resolveAndBind(rightSchema.toAttributes).objDeserializer.eval(input = rightNameRow).asInstanceOf[Name]
         val flag = NameComparator(leftName, rightName).compare()
-        InternalRow(flag.value().toBinaryString, flag.value())
-      case _ => InternalRow(Long.MinValue.toBinaryString, Long.MinValue)
+        InternalRow(UTF8String.fromString(flag.value().toBinaryString), flag.value())
+      case _ => InternalRow(UTF8String.fromString(Long.MinValue.toBinaryString), Long.MinValue)
     }
 
   }

@@ -32,7 +32,7 @@ case class NameCompare_2(left : Expression, right : Expression)
           val name1 = JsonMethods.parse(leftJson.toString).extract[Name]
           val name2 = JsonMethods.parse(rightJson.toString).extract[Name]
          val flag = NameComparator(name1,name2).compare()
-        InternalRow(flag.value().toBinaryString, flag.value())
+        InternalRow(UTF8String.fromString(flag.value().toBinaryString), flag.value())
       case _ => InternalRow(Long.MinValue.toBinaryString, Long.MinValue)
     }
 
